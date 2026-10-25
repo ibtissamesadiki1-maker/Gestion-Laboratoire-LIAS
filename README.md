@@ -1,1 +1,1 @@
-"Projet de Gestion du Laboratoire LIAS - Par: Ibtissam Esadiki"
+Projet de Gestion du Laboratoire LIAS - Par: Ibtissam Essadiki
