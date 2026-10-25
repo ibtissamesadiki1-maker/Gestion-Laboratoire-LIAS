@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>LIAS — Laboratoire d'Informatique et Applications Scientifiques</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg:        #F4EFE6;
+    --surface:   #FBF7EE;
+    --surface-2: #EDE5D3;
+    --border:    #DCD2BB;
+    --ink:       #1A1814;
+    --muted:     #6E665A;
+    --cream:     #F4EFE6;
+    --navy:      #1B2F4A;
+    --accent-2:  #B08838;
+    --burgundy:  #7A2A26;
+    --sage:      #33503A;
+    --font-serif: "Spectral", Georgia, serif;
+    --font-sans:  "DM Sans", system-ui, sans-serif;
+    --font-mono:  "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font-sans); font-size: 15px;
+    -webkit-font-smoothing: antialiased; line-height: 1.5;
+  }
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:-1;
+    background-image: radial-gradient(rgba(110,102,90,0.05) 1px, transparent 1px);
+    background-size: 3px 3px; opacity:0.5;
+  }
+  a { color: var(--navy); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { font-family: var(--font-serif); font-weight: 500; letter-spacing: -0.01em; }
+  ::selection { background: var(--navy); color: var(--cream); }
+
+  /* ----- Top bar ----- */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(244,239,230,0.92); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px; height: 68px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-mark {
+    width: 36px; height: 36px; background: var(--navy); color: var(--cream);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-serif); font-size: 19px; font-weight: 600;
+  }
+  .brand-name {
+    font-family: var(--font-serif); font-size: 21px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .brand-name .est {
+    font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+    letter-spacing: 0.12em; margin-left: 6px;
+  }
+  .nav {
+    display: flex; gap: 32px; align-items: center;
+  }
+  .nav a {
+    font-family: var(--font-sans); font-size: 13.5px; color: var(--ink);
+    font-weight: 400;
+  }
+  .nav a:hover { color: var(--navy); }
+  .nav .cta {
+    padding: 9px 18px; background: var(--navy); color: var(--cream);
+    border: 1px solid var(--navy);
+  }
+  .nav .cta:hover { background: #13243B; text-decoration: none; }
+
+  /* ----- Hero ----- */
+  .hero {
+    padding: 96px 40px 80px;
+    max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: 1.4fr 1fr; gap: 80px; align-items: end;
+  }
+  .hero .eyebrow {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: var(--font-serif); font-size: 96px; font-weight: 500;
+    line-height: 0.98; margin: 0; letter-spacing: -0.02em;
+  }
+  .hero h1 em {
+    font-style: italic; color: var(--accent-2);
+  }
+  .hero .sub {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 22px; color: var(--muted); margin: 32px 0 0; line-height: 1.5;
+    max-width: 580px;
+  }
+  .hero-side {
+    padding: 28px 32px; border: 1px solid var(--border); background: var(--surface);
+    font-family: var(--font-serif); font-size: 17px; color: var(--ink); line-height: 1.6;
+  }
+  .hero-side .quote-mark {
+    font-family: var(--font-serif); font-size: 56px; color: var(--accent-2);
+    line-height: 0.8; display: block; margin-bottom: 10px;
+  }
+  .hero-side .attribution {
+    margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border);
+    font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  /* ----- Stats strip ----- */
+  .stats {
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .stats-grid {
+    max-width: 1280px; margin: 0 auto;
+    padding: 0 40px;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+  }
+  .stat {
+    padding: 36px 28px; border-right: 1px solid var(--border);
+  }
+  .stat:last-child { border-right: none; }
+  .stat .k {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+  }
+  .stat .v {
+    font-family: var(--font-serif); font-size: 56px; font-weight: 500;
+    color: var(--ink); line-height: 1; font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .stat .s {
+    font-family: var(--font-sans); font-size: 12.5px; color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* ----- Section header ----- */
+  .section {
+    padding: 96px 40px;
+    max-width: 1280px; margin: 0 auto;
+  }
+  .section-head {
+    margin-bottom: 48px; display: flex; justify-content: space-between; align-items: end; gap: 40px;
+  }
+  .section-eyebrow {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: var(--font-serif); font-size: 56px; font-weight: 500;
+    line-height: 1.05; margin: 0; letter-spacing: -0.015em;
+    max-width: 680px;
+  }
+  .section-link {
+    font-family: var(--font-sans); font-size: 14px; color: var(--navy); font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* ----- Teams grid ----- */
+  .teams { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .team {
+    background: var(--surface); padding: 36px 32px;
+    display: flex; flex-direction: column; gap: 14px;
+    transition: background 0.15s;
+  }
+  .team:hover { background: var(--surface-2); }
+  .team .badge {
+    align-self: flex-start; padding: 4px 10px;
+    border: 1px solid var(--border); background: var(--bg);
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .team h3 {
+    font-family: var(--font-serif); font-size: 28px; font-weight: 500;
+    margin: 0; letter-spacing: -0.01em;
+  }
+  .team p {
+    font-family: var(--font-serif); font-size: 15.5px; color: var(--muted);
+    line-height: 1.6; margin: 0;
+  }
+  .team .lead {
+    margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: var(--font-sans); font-size: 12.5px; color: var(--ink);
+  }
+  .team .count {
+    font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  /* ----- Activities feed ----- */
+  .activities { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .activity { background: var(--surface); padding: 28px 32px; display: flex; gap: 18px; }
+  .activity .date {
+    font-family: var(--font-serif); font-size: 38px; font-weight: 500;
+    line-height: 1; min-width: 64px; text-align: center; color: var(--ink);
+  }
+  .activity .month {
+    font-family: var(--font-mono); font-size: 10.5px; color: var(--muted);
+    letter-spacing: 0.15em; text-transform: uppercase; margin-top: 4px; display: block;
+  }
+  .activity .body { flex: 1; }
+  .activity .type {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.15em;
+    text-transform: uppercase; padding: 2px 8px; display: inline-block;
+    border-radius: 999px;
+  }
+  .activity .type.conf { background: rgba(27,47,74,0.08); color: var(--navy); }
+  .activity .type.semi { background: rgba(176,136,56,0.12); color: #7A5B2E; }
+  .activity .type.work { background: rgba(51,80,58,0.10); color: var(--sage); }
+  .activity h4 {
+    font-family: var(--font-serif); font-size: 20px; font-weight: 500;
+    margin: 8px 0 6px; letter-spacing: -0.005em;
+  }
+  .activity .where {
+    font-family: var(--font-sans); font-size: 13px; color: var(--muted);
+  }
+
+  /* ----- Publications list ----- */
+  .pubs { list-style: none; padding: 0; margin: 0; }
+  .pub {
+    padding: 24px 0; border-top: 1px solid var(--border);
+    display: grid; grid-template-columns: 80px 1fr 100px; gap: 24px; align-items: baseline;
+  }
+  .pub:last-child { border-bottom: 1px solid var(--border); }
+  .pub .year {
+    font-family: var(--font-serif); font-size: 24px; font-weight: 500;
+    color: var(--ink); font-variant-numeric: tabular-nums;
+  }
+  .pub-title {
+    font-family: var(--font-serif); font-size: 18px; color: var(--ink); margin: 0 0 4px;
+    line-height: 1.35; font-weight: 500;
+  }
+  .pub-meta {
+    font-family: var(--font-sans); font-size: 13px; color: var(--muted);
+  }
+  .pub-meta em { font-family: var(--font-serif); font-size: 14px; color: var(--ink); font-style: italic; }
+  .pub-type {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); text-align: right;
+  }
+
+  /* ----- Partners strip ----- */
+  .partners {
+    background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .partners-inner {
+    max-width: 1280px; margin: 0 auto;
+    padding: 56px 40px;
+  }
+  .partners-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 0;
+    border: 1px solid var(--border);
+  }
+  .partner {
+    padding: 28px 14px; text-align: center;
+    border-right: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .partner:last-child { border-right: none; }
+  .partner-mark {
+    width: 56px; height: 56px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-serif); font-size: 22px; font-weight: 600;
+    color: var(--navy); border: 1px solid var(--border); background: var(--surface);
+  }
+  .partner-name {
+    margin-top: 14px;
+    font-family: var(--font-serif); font-size: 13.5px; color: var(--ink); line-height: 1.3;
+  }
+  .partner-country {
+    font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.15em;
+    color: var(--muted); text-transform: uppercase; margin-top: 4px;
+  }
+
+  /* ----- CTA ----- */
+  .cta-box {
+    background: var(--navy); color: var(--cream);
+    padding: 80px 64px; max-width: 1280px; margin: 56px auto 96px;
+    display: grid; grid-template-columns: 1.4fr 1fr; gap: 56px; align-items: end;
+    position: relative; overflow: hidden;
+  }
+  .cta-box::before {
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background-image: radial-gradient(rgba(244,239,230,0.05) 1px, transparent 1px);
+    background-size: 4px 4px;
+  }
+  .cta-box > * { position: relative; }
+  .cta-box .eyebrow { color: rgba(244,239,230,0.55); }
+  .cta-box h2 {
+    font-family: var(--font-serif); font-size: 56px; font-weight: 500;
+    line-height: 1.05; margin: 14px 0 0; letter-spacing: -0.015em;
+  }
+  .cta-box p {
+    font-family: var(--font-serif); font-size: 17px; color: rgba(244,239,230,0.78);
+    line-height: 1.6; margin: 0 0 24px;
+  }
+  .cta-buttons { display: flex; gap: 10px; }
+  .cta-btn {
+    padding: 12px 22px; font-family: var(--font-sans); font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .cta-btn.primary { background: var(--accent-2); color: #1A1814; border: 1px solid var(--accent-2); }
+  .cta-btn.primary:hover { background: #c79a40; text-decoration: none; }
+  .cta-btn.ghost { background: transparent; color: var(--cream); border: 1px solid rgba(244,239,230,0.35); }
+  .cta-btn.ghost:hover { border-color: var(--cream); text-decoration: none; }
+
+  /* ----- Footer ----- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px;
+  }
+  .footer-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px;
+  }
+  footer h5 {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--muted); margin: 0 0 14px;
+  }
+  footer ul { list-style: none; padding: 0; margin: 0; }
+  footer ul li { padding: 4px 0; }
+  footer ul li a { font-family: var(--font-sans); font-size: 13px; color: var(--ink); }
+  .footer-credit {
+    max-width: 1280px; margin: 32px auto 0; padding-top: 24px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    font-family: var(--font-mono); font-size: 10.5px; color: var(--muted);
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+
+  @media (max-width: 1024px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; padding: 48px 24px; }
+    .hero h1 { font-size: 56px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat { border-bottom: 1px solid var(--border); }
+    .teams, .activities { grid-template-columns: 1fr; }
+    .partners-grid { grid-template-columns: repeat(3, 1fr); }
+    .cta-box { grid-template-columns: 1fr; padding: 48px 32px; }
+    .cta-box h2 { font-size: 36px; }
+    .section { padding: 48px 24px; }
+    .section-title { font-size: 36px; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="Site Public LIAS.html" class="brand">
+    <div class="brand-mark">L</div>
+    <div class="brand-name">LIAS<span class="est">EST. 2003</span></div>
+  </a>
+  <nav class="nav">
+    <a href="#presentation">Présentation</a>
+    <a href="#equipes">Équipes</a>
+    <a href="#activites">Activités</a>
+    <a href="#publications">Publications</a>
+    <a href="#contact">Contact</a>
+    <a href="Login LIAS.html" class="cta">Espace membre →</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="presentation">
+  <div>
+    <div class="eyebrow">Laboratoire de recherche · informatique & sciences des données</div>
+    <h1>Vingt-trois années<br>de recherche en <em>informatique appliquée</em>.</h1>
+    <p class="sub">Le LIAS rassemble 33 chercheurs et doctorants autour de quatre axes thématiques — apprentissage automatique, big data, langues naturelles, sécurité — au cœur de la Faculté des Sciences Ben M'Sik à Casablanca.</p>
+  </div>
+  <aside class="hero-side">
+    <span class="quote-mark">“</span>
+    Un laboratoire est avant tout une mémoire — celle de ses chercheurs, de ses doctorants, de ses partenaires. Notre rôle est de la transmettre intacte.
+    <div class="attribution">Pr. Yassine El Amrani · Directeur</div>
+  </aside>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="stats-grid">
+    <div class="stat"><div class="k">Membres permanents</div><div class="v">22</div><div class="s">enseignants-chercheurs</div></div>
+    <div class="stat"><div class="k">Doctorants en cours</div><div class="v">11</div><div class="s">co-encadrement national & international</div></div>
+    <div class="stat"><div class="k">Publications 2025</div><div class="v">52</div><div class="s">revues & conférences</div></div>
+    <div class="stat"><div class="k">Conventions actives</div><div class="v">7</div><div class="s">Maroc · France · entreprises</div></div>
+  </div>
+</section>
+
+<!-- TEAMS -->
+<section class="section" id="equipes">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow">Quatre axes thématiques</div>
+      <h2 class="section-title">Nos équipes de recherche</h2>
+    </div>
+    <a href="#" class="section-link">Voir tous les chercheurs →</a>
+  </div>
+
+  <div class="teams">
+    <div class="team">
+      <span class="badge">IA-AA</span>
+      <h3>IA & Apprentissage automatique</h3>
+      <p>Modèles de diffusion, apprentissage par renforcement, vision par ordinateur appliquée à la robotique et à l'imagerie médicale.</p>
+      <div class="lead">
+        <span>Chef d'équipe · <strong>Pr. Khalid Tazi</strong></span>
+        <span class="count">11 membres</span>
+      </div>
+    </div>
+    <div class="team">
+      <span class="badge">BD-FD</span>
+      <h3>Big Data & Fouille de données</h3>
+      <p>Bases de données distribuées, streaming analytics, systèmes de recommandation et fouille de graphes — projets industriels avec Casa Transports et l'INRIA.</p>
+      <div class="lead">
+        <span>Chef d'équipe · <strong>Pr. Salma Bennani</strong></span>
+        <span class="count">9 membres</span>
+      </div>
+    </div>
+    <div class="team">
+      <span class="badge">NLP</span>
+      <h3>Traitement du langage naturel</h3>
+      <p>Modèles de langue pour l'arabe dialectal marocain, traduction neuronale, résumé automatique et question-answering multilingue.</p>
+      <div class="lead">
+        <span>Chef d'équipe · <strong>Dr. Omar Lahlou</strong></span>
+        <span class="count">6 membres</span>
+      </div>
+    </div>
+    <div class="team">
+      <span class="badge">SEC</span>
+      <h3>Sécurité & Systèmes distribués</h3>
+      <p>Cryptographie post-quantique, sécurité des objets connectés contraints, détection d'intrusion et apprentissage fédéré sur edge devices.</p>
+      <div class="lead">
+        <span>Chef d'équipe · <strong>Dr. Fatima Zahra Idrissi</strong></span>
+        <span class="count">7 membres</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIVITIES -->
+<section class="section" id="activites" style="padding-top:0;">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow">Agenda · prochains 12 mois</div>
+      <h2 class="section-title">Activités & évènements</h2>
+    </div>
+    <a href="#" class="section-link">Voir le calendrier complet →</a>
+  </div>
+
+  <div class="activities">
+    <div class="activity">
+      <div class="date">14<span class="month">Juin 2026</span></div>
+      <div class="body">
+        <span class="type semi">Séminaire</span>
+        <h4>Federated Learning sur Edge</h4>
+        <div class="where">Ben M'Sik · Salle 12 · organisé par F. Z. Idrissi</div>
+      </div>
+    </div>
+    <div class="activity">
+      <div class="date">10<span class="month">Juillet 2026</span></div>
+      <div class="body">
+        <span class="type conf">Conférence</span>
+        <h4>ACL 2026 — Vienne, Autriche</h4>
+        <div class="where">Présentation des travaux NLP du laboratoire</div>
+      </div>
+    </div>
+    <div class="activity">
+      <div class="date">04<span class="month">Août 2026</span></div>
+      <div class="body">
+        <span class="type conf">Conférence</span>
+        <h4>IJCAI 2026 — Montréal</h4>
+        <div class="where">Présentation jointe Y. El Amrani & A. Saidi</div>
+      </div>
+    </div>
+    <div class="activity">
+      <div class="date">22<span class="month">Octobre 2026</span></div>
+      <div class="body">
+        <span class="type work">Workshop</span>
+        <h4>CASA-DATA 2026 — 8<sup>e</sup> édition</h4>
+        <div class="where">Casablanca · CRIIT · co-organisé avec Casa Transports</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section class="section" id="publications" style="padding-top:0;">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow">Productions récentes</div>
+      <h2 class="section-title">Publications scientifiques</h2>
+    </div>
+    <a href="#" class="section-link">Tout le catalogue (412) →</a>
+  </div>
+
+  <ul class="pubs">
+    <li class="pub">
+      <span class="year">2026</span>
+      <div>
+        <h3 class="pub-title">Reinforcement learning for last-mile robotic delivery in dense urban areas</h3>
+        <div class="pub-meta">Y. El Amrani, K. Tazi, A. Saidi · <em>IEEE TNNLS</em>, 2026</div>
+      </div>
+      <div class="pub-type">Revue · IA</div>
+    </li>
+    <li class="pub">
+      <span class="year">2026</span>
+      <div>
+        <h3 class="pub-title">Streaming graph analytics over urban mobility flows</h3>
+        <div class="pub-meta">S. Bennani, Y. Boussadi · <em>VLDB</em>, 2026</div>
+      </div>
+      <div class="pub-type">Conf. · BD</div>
+    </li>
+    <li class="pub">
+      <span class="year">2026</span>
+      <div>
+        <h3 class="pub-title">A survey on graph-based recommender systems in 2025</h3>
+        <div class="pub-meta">N. Berrada, S. Bennani · <em>ACM CSUR</em>, 2026</div>
+      </div>
+      <div class="pub-type">Revue · BD</div>
+    </li>
+    <li class="pub">
+      <span class="year">2025</span>
+      <div>
+        <h3 class="pub-title">Moroccan Darija summarization with adapter-tuned LLMs</h3>
+        <div class="pub-meta">O. Lahlou, N. Berrada · <em>EMNLP</em>, 2025</div>
+      </div>
+      <div class="pub-type">Conf. · NLP</div>
+    </li>
+    <li class="pub">
+      <span class="year">2025</span>
+      <div>
+        <h3 class="pub-title">Lightweight authentication for resource-constrained IoT</h3>
+        <div class="pub-meta">F. Z. Idrissi, R. Hamdani · <em>IEEE IoT-J</em>, 2025</div>
+      </div>
+      <div class="pub-type">Revue · SEC</div>
+    </li>
+  </ul>
+</section>
+
+<!-- PARTNERS -->
+<section class="partners">
+  <div class="partners-inner">
+    <div class="section-head" style="margin-bottom: 32px;">
+      <div>
+        <div class="section-eyebrow">Conventions & collaborations</div>
+        <h2 class="section-title" style="font-size: 36px;">Nos partenaires</h2>
+      </div>
+    </div>
+    <div class="partners-grid">
+      <div class="partner"><div class="partner-mark">CT</div><div class="partner-name">Casa Transports</div><div class="partner-country">Maroc</div></div>
+      <div class="partner"><div class="partner-mark">IN</div><div class="partner-name">INRIA Paris</div><div class="partner-country">France</div></div>
+      <div class="partner"><div class="partner-mark">UM</div><div class="partner-name">Université Mohammed V</div><div class="partner-country">Maroc</div></div>
+      <div class="partner"><div class="partner-mark">LP</div><div class="partner-name">CNRS-LIPN</div><div class="partner-country">France</div></div>
+      <div class="partner"><div class="partner-mark">EN</div><div class="partner-name">ENSIAS Rabat</div><div class="partner-country">Maroc</div></div>
+      <div class="partner"><div class="partner-mark">OC</div><div class="partner-name">OCP Innovation Fund</div><div class="partner-country">Maroc</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-box" id="contact">
+  <div>
+    <div class="eyebrow" style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;">Rejoignez le laboratoire</div>
+    <h2>Vous souhaitez collaborer avec le LIAS ?</h2>
+  </div>
+  <div>
+    <p>Doctorants, chercheurs associés, partenaires industriels — chaque demande d'adhésion est étudiée personnellement par la direction du laboratoire en mandat.</p>
+    <div class="cta-buttons">
+      <a href="#" class="cta-btn primary">Déposer une demande →</a>
+      <a href="mailto:contact@lias.ma" class="cta-btn ghost">contact@lias.ma</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="brand" style="margin-bottom: 14px;">
+        <div class="brand-mark">L</div>
+        <div class="brand-name">LIAS<span class="est">EST. 2003</span></div>
+      </div>
+      <p style="font-family: var(--font-serif); font-size: 13.5px; color: var(--muted); line-height: 1.55; margin: 0;">
+        Laboratoire d'Informatique et Applications Scientifiques. Faculté des Sciences Ben M'Sik — Université Hassan II — Casablanca, Maroc.
+      </p>
+    </div>
+    <div>
+      <h5>Explorer</h5>
+      <ul>
+        <li><a href="#presentation">Présentation</a></li>
+        <li><a href="#equipes">Équipes</a></li>
+        <li><a href="#activites">Activités</a></li>
+        <li><a href="#publications">Publications</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Accès</h5>
+      <ul>
+        <li><a href="Login LIAS.html">Espace membre</a></li>
+        <li><a href="#">Demande d'adhésion</a></li>
+        <li><a href="#">Recrutement doctorants</a></li>
+        <li><a href="#">Stages de recherche</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <ul>
+        <li style="font-family: var(--font-mono); font-size: 12px; color: var(--ink);">contact@lias.ma</li>
+        <li style="font-family: var(--font-sans); font-size: 12.5px; color: var(--muted);">+212 5 22 — — — — —</li>
+        <li style="font-family: var(--font-sans); font-size: 12.5px; color: var(--muted);">B.P. 7955 · Casablanca</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-credit">
+    <span>© 2003–2026 LIAS · Tous droits réservés</span>
+    <span>Plan du site · Mentions légales · RGPD</span>
+  </div>
+</footer>
+
+</body>
+</html>

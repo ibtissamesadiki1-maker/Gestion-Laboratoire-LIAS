@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <display-name>Laboratoire LIAS - Application JEE Classique</display-name>
+
+    <description>
+        Système de gestion du laboratoire LIAS - Faculté des Sciences Ben M'Sik
+        Architecture MVC 2 classique : JavaBeans + DAO (JDBC) + Servlets + Vues JSP.
+    </description>
+
+    <!-- 1. Servlet Accueil Public -->
+    <servlet>
+        <servlet-name>PublicServlet</servlet-name>
+        <servlet-class>com.lias.web.PublicServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PublicServlet</servlet-name>
+        <url-pattern>/public</url-pattern>
+        <url-pattern>/accueil</url-pattern>
+    </servlet-mapping>
+
+    <!-- 2. Servlet Authentification (Login) -->
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.lias.web.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <!-- 3. Servlet Déconnexion (Logout) -->
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.lias.web.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
+    <!-- 4. Servlet Espace Privé Dashboard -->
+    <servlet>
+        <servlet-name>HomeServlet</servlet-name>
+        <servlet-class>com.lias.web.HomeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HomeServlet</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+
+    <!-- 5. Servlet Membres et Profils (CDC §3) -->
+    <servlet>
+        <servlet-name>MemberServlet</servlet-name>
+        <servlet-class>com.lias.web.MemberServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MemberServlet</servlet-name>
+        <url-pattern>/membres</url-pattern>
+        <url-pattern>/profils</url-pattern>
+    </servlet-mapping>
+
+    <!-- 6. Servlet Publications Scientifiques (CDC §12) -->
+    <servlet>
+        <servlet-name>PublicationServlet</servlet-name>
+        <servlet-class>com.lias.web.PublicationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PublicationServlet</servlet-name>
+        <url-pattern>/publications</url-pattern>
+    </servlet-mapping>
+
+    <!-- 7. Servlet Évènements (CDC §9) -->
+    <servlet>
+        <servlet-name>EvenementServlet</servlet-name>
+        <servlet-class>com.lias.web.EvenementServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EvenementServlet</servlet-name>
+        <url-pattern>/evenements</url-pattern>
+    </servlet-mapping>
+
+    <!-- 7bis. Servlet Calendrier Scientifique (CDC §20) -->
+    <servlet>
+        <servlet-name>CalendrierServlet</servlet-name>
+        <servlet-class>com.lias.web.CalendrierServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CalendrierServlet</servlet-name>
+        <url-pattern>/calendrier</url-pattern>
+    </servlet-mapping>
+
+    <!-- 8. Servlet Demandes d'Adhésion (CDC §6) -->
+    <servlet>
+        <servlet-name>AdhesionServlet</servlet-name>
+        <servlet-class>com.lias.web.AdhesionServlet</servlet-class>
+        <multipart-config>
+            <max-file-size>26214400</max-file-size>
+            <max-request-size>52428800</max-request-size>
+            <file-size-threshold>2097152</file-size-threshold>
+        </multipart-config>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdhesionServlet</servlet-name>
+        <url-pattern>/adhesions</url-pattern>
+    </servlet-mapping>
+
+    <!-- 9. Servlet Gestion du Matériel (CDC §14) -->
+    <servlet>
+        <servlet-name>MaterielServlet</servlet-name>
+        <servlet-class>com.lias.web.MaterielServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MaterielServlet</servlet-name>
+        <url-pattern>/materiel</url-pattern>
+    </servlet-mapping>
+
+    <!-- 9bis. Servlet Gestion des Besoins en Matériel (CDC §15) -->
+    <servlet>
+        <servlet-name>BesoinsMaterielServlet</servlet-name>
+        <servlet-class>com.lias.web.BesoinsMaterielServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BesoinsMaterielServlet</servlet-name>
+        <url-pattern>/besoins-materiel</url-pattern>
+        <url-pattern>/besoins</url-pattern>
+    </servlet-mapping>
+
+    <!-- 10. Servlet Rapport Annuel (CDC §11) -->
+    <servlet>
+        <servlet-name>RapportServlet</servlet-name>
+        <servlet-class>com.lias.web.RapportServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RapportServlet</servlet-name>
+        <url-pattern>/rapport</url-pattern>
+    </servlet-mapping>
+
+    <!-- 11. Servlet Mandats et Gouvernance (CDC §5) -->
+    <servlet>
+        <servlet-name>MandatServlet</servlet-name>
+        <servlet-class>com.lias.web.MandatServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MandatServlet</servlet-name>
+        <url-pattern>/mandats</url-pattern>
+    </servlet-mapping>
+
+    <!-- 12. Servlet Conventions et Partenariats (CDC §16) -->
+    <servlet>
+        <servlet-name>ConventionServlet</servlet-name>
+        <servlet-class>com.lias.web.ConventionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ConventionServlet</servlet-name>
+        <url-pattern>/conventions</url-pattern>
+    </servlet-mapping>
+
+    <!-- 13. Servlet Procès-Verbaux (CDC §17) -->
+    <servlet>
+        <servlet-name>PVServlet</servlet-name>
+        <servlet-class>com.lias.web.PVServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PVServlet</servlet-name>
+        <url-pattern>/pv</url-pattern>
+    </servlet-mapping>
+
+    <!-- 14. Servlet Administration Système (CDC §5.1) -->
+    <servlet>
+        <servlet-name>AdminServlet</servlet-name>
+        <servlet-class>com.lias.web.AdminServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+
+    <!-- 15. Servlet Archive Documentaire (CDC §10) -->
+    <servlet>
+        <servlet-name>DocumentServlet</servlet-name>
+        <servlet-class>com.lias.web.DocumentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DocumentServlet</servlet-name>
+        <url-pattern>/documents</url-pattern>
+    </servlet-mapping>
+
+    <!-- 16. Servlet Communication Interne (CDC §13) -->
+    <servlet>
+        <servlet-name>CommunicationServlet</servlet-name>
+        <servlet-class>com.lias.web.CommunicationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CommunicationServlet</servlet-name>
+        <url-pattern>/communication</url-pattern>
+    </servlet-mapping>
+
+    <!-- 17. Servlet Centre de Notifications (CDC §19) -->
+    <servlet>
+        <servlet-name>NotificationServlet</servlet-name>
+        <servlet-class>com.lias.web.NotificationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NotificationServlet</servlet-name>
+        <url-pattern>/notifications</url-pattern>
+    </servlet-mapping>
+
+    <!-- 18. Servlet Recherche Globale Multi-Critères (CDC §18) -->
+    <servlet>
+        <servlet-name>RechercheServlet</servlet-name>
+        <servlet-class>com.lias.web.RechercheServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RechercheServlet</servlet-name>
+        <url-pattern>/recherche</url-pattern>
+    </servlet-mapping>
+
+    <!-- 0. Filtre Global d'encodage UTF-8 (Tomcat 10 / Jakarta EE) -->
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>ignore</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Filtre de sécurité JEE pour interdire l'accès direct sans session -->
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>com.lias.filter.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/home</url-pattern>
+        <url-pattern>/rapport</url-pattern>
+        <url-pattern>/mandats</url-pattern>
+        <url-pattern>/conventions</url-pattern>
+        <url-pattern>/pv</url-pattern>
+        <url-pattern>/materiel</url-pattern>
+        <url-pattern>/admin</url-pattern>
+        <url-pattern>/calendrier</url-pattern>
+        <url-pattern>/documents</url-pattern>
+        <url-pattern>/communication</url-pattern>
+        <url-pattern>/notifications</url-pattern>
+        <url-pattern>/recherche</url-pattern>
+        <url-pattern>/publications</url-pattern>
+        <url-pattern>/evenements</url-pattern>
+        <url-pattern>/membres</url-pattern>
+        <url-pattern>/profils</url-pattern>
+    </filter-mapping>
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/views/errors/403.jsp</location>
+    </error-page>
+
+    <!-- Page d'accueil par défaut -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!-- Session Timeout (30 min) -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+</web-app>

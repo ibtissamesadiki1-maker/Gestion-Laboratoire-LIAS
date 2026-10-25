@@ -1,0 +1,57 @@
+services:
+  # -------------------------------------------------------------
+  # Application JEE Classique : Tomcat 10.1 + Java 21
+  # -------------------------------------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lias-app
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+    volumes:
+      - ./src/main/webapp/WEB-INF/views:/usr/local/tomcat/webapps/ROOT/WEB-INF/views
+      - ./src/main/webapp/WEB-INF/web.xml:/usr/local/tomcat/webapps/ROOT/WEB-INF/web.xml
+      - ./src/main/webapp/css:/usr/local/tomcat/webapps/ROOT/css
+      - ./src/main/webapp/js:/usr/local/tomcat/webapps/ROOT/js
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - lias-network
+
+  # -------------------------------------------------------------
+  # Database : MySQL 8.0
+  # -------------------------------------------------------------
+  db:
+    image: mysql:8.0
+    container_name: lias-mysql
+    restart: always
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: lias_db
+      MYSQL_USER: lias_user
+      MYSQL_PASSWORD: lias_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - lias_mysql_data:/var/lib/mysql
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - lias-network
+
+networks:
+  lias-network:
+    driver: bridge
+
+volumes:
+  lias_mysql_data:

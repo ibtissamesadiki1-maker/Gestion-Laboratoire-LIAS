@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>LIAS — Connexion</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg:        #F4EFE6;
+    --surface:   #FBF7EE;
+    --surface-2: #EDE5D3;
+    --border:    #DCD2BB;
+    --ink:       #1A1814;
+    --muted:     #6E665A;
+    --cream:     #F4EFE6;
+    --navy:      #1B2F4A;
+    --accent-2:  #B08838;
+    --font-serif: "Spectral", Georgia, serif;
+    --font-sans:  "DM Sans", system-ui, sans-serif;
+    --font-mono:  "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; height:100%; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font-sans); font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    overflow:hidden;
+  }
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image: radial-gradient(rgba(110,102,90,0.05) 1px, transparent 1px);
+    background-size: 3px 3px; opacity:0.5;
+  }
+  a { color: var(--navy); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .layout {
+    display: grid; grid-template-columns: 1.1fr 1fr; height: 100vh;
+    position:relative; z-index:1;
+  }
+  /* Left: editorial column */
+  .left {
+    background: var(--navy); color: var(--cream);
+    padding: 56px 64px; display: flex; flex-direction: column;
+    position: relative; overflow:hidden;
+  }
+  .left::before {
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background-image: radial-gradient(rgba(244,239,230,0.05) 1px, transparent 1px);
+    background-size: 4px 4px;
+  }
+  .brand {
+    display:flex; align-items:center; gap: 14px; position:relative; z-index:1;
+  }
+  .brand-mark {
+    width: 44px; height: 44px; background: var(--accent-2); color: #1A1814;
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--font-serif); font-size: 24px; font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .brand-text {
+    font-family: var(--font-serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .brand-text .est {
+    font-family: var(--font-mono); font-size: 11px; color: rgba(244,239,230,0.55);
+    letter-spacing: 0.12em; margin-left: 8px;
+  }
+  .lead {
+    margin-top: auto; margin-bottom: 56px; position:relative; z-index:1;
+  }
+  .eyebrow {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: rgba(244,239,230,0.55); margin-bottom: 18px;
+  }
+  .lead h1 {
+    font-family: var(--font-serif); font-size: 56px; font-weight: 500;
+    line-height: 1.05; margin: 0; letter-spacing: -0.015em;
+    max-width: 540px;
+  }
+  .lead p {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 19px; color: rgba(244,239,230,0.72);
+    margin: 24px 0 0; max-width: 480px; line-height: 1.55;
+  }
+  .footnote {
+    position:relative; z-index:1;
+    font-family: var(--font-mono); font-size: 11px;
+    color: rgba(244,239,230,0.45); letter-spacing: 0.1em; text-transform: uppercase;
+    border-top: 1px solid rgba(244,239,230,0.15); padding-top: 18px;
+  }
+
+  /* Right: form column */
+  .right {
+    background: var(--bg);
+    padding: 56px; display: flex; align-items: center; justify-content: center;
+  }
+  .card {
+    width: 100%; max-width: 420px;
+  }
+  .card .eyebrow { color: var(--muted); margin-bottom: 10px; }
+  .card h2 {
+    font-family: var(--font-serif); font-size: 36px; font-weight: 500;
+    margin: 0 0 8px; letter-spacing: -0.01em; color: var(--ink);
+  }
+  .card .sub {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 15px; color: var(--muted); margin-bottom: 32px; line-height: 1.55;
+  }
+  .field { margin-bottom: 18px; }
+  .field label {
+    display:block; font-family: var(--font-mono); font-size: 10.5px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  .field input {
+    width: 100%; padding: 12px 14px;
+    background: var(--surface); border: 1px solid var(--border);
+    font-family: var(--font-sans); font-size: 14px; color: var(--ink);
+    outline: none; border-radius: 2px;
+    transition: border-color 0.15s;
+  }
+  .field input:focus { border-color: var(--navy); }
+  .row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin: -6px 0 24px;
+  }
+  .row label {
+    font-family: var(--font-sans); font-size: 12.5px; color: var(--ink);
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  }
+  .row label input[type="checkbox"] { accent-color: var(--navy); }
+  .row a {
+    font-family: var(--font-sans); font-size: 12.5px;
+    color: var(--navy); font-style: italic;
+  }
+  .submit {
+    width:100%; padding: 13px;
+    background: var(--navy); color: var(--cream);
+    border: 1px solid var(--navy);
+    font-family: var(--font-sans); font-size: 14px; font-weight: 500;
+    letter-spacing: 0.01em; cursor: pointer;
+    transition: background 0.15s;
+  }
+  .submit:hover { background: #13243B; }
+  .sso {
+    margin-top: 14px; padding: 11px;
+    width:100%; background: transparent; color: var(--ink);
+    border: 1px solid var(--border);
+    font-family: var(--font-sans); font-size: 13px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: background 0.15s;
+  }
+  .sso:hover { background: var(--surface-2); }
+  .sso-icon {
+    width: 16px; height: 16px; background: var(--accent-2);
+    display:inline-block;
+  }
+  .separator {
+    display:flex; align-items:center; gap: 14px;
+    margin: 24px 0 10px;
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--muted); letter-spacing: 0.18em; text-transform: uppercase;
+  }
+  .separator::before, .separator::after {
+    content:''; flex:1; height: 1px; background: var(--border);
+  }
+  .help {
+    margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--border);
+    font-family: var(--font-sans); font-size: 12.5px; color: var(--muted); text-align: center;
+  }
+  .help a { font-weight: 500; }
+
+  /* Demo accounts strip */
+  .demo-accounts {
+    margin-top: 24px;
+    padding: 14px 16px;
+    background: var(--surface-2); border: 1px dashed var(--border);
+  }
+  .demo-accounts .label {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .demo-accounts .accounts {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+  }
+  .demo-accounts button {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 7px 10px; text-align: left; cursor: pointer;
+    font-family: var(--font-sans); font-size: 11.5px;
+    transition: background 0.12s;
+  }
+  .demo-accounts button:hover { background: var(--surface); border-color: var(--navy); }
+  .demo-accounts button strong { display:block; font-weight: 500; color: var(--ink); }
+  .demo-accounts button span { color: var(--muted); font-family: var(--font-mono); font-size: 10.5px; }
+
+  @media (max-width: 880px) {
+    .layout { grid-template-columns: 1fr; }
+    .left { padding: 32px; min-height: 280px; }
+    .lead h1 { font-size: 32px; }
+    .lead p { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <div class="left">
+    <div class="brand">
+      <div class="brand-mark">L</div>
+      <div class="brand-text">LIAS<span class="est">EST. 2003</span></div>
+    </div>
+
+    <div class="lead">
+      <div class="eyebrow">Application interne · accès membres</div>
+      <h1>Une mémoire institutionnelle pour le laboratoire.</h1>
+      <p>Vingt-trois années de recherche, quatre équipes, quatre mandats — capitalisés et historisés au sein d'une seule plateforme.</p>
+    </div>
+
+    <div class="footnote">
+      Faculté des Sciences Ben M'Sik · Casablanca · Université Hassan II
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="card">
+      <div class="eyebrow">Connexion</div>
+      <h2>Bienvenue.</h2>
+      <p class="sub">Identifiez-vous avec votre compte institutionnel pour accéder à l'espace membre.</p>
+
+      <form onsubmit="event.preventDefault(); window.location.href = 'Application LIAS.html';">
+        <div class="field">
+          <label for="email">Adresse email institutionnelle</label>
+          <input id="email" type="email" placeholder="prenom.nom@lias.ma" required autofocus>
+        </div>
+        <div class="field">
+          <label for="pwd">Mot de passe</label>
+          <input id="pwd" type="password" placeholder="••••••••••" required>
+        </div>
+        <div class="row">
+          <label><input type="checkbox"> Rester connecté·e</label>
+          <a href="#">Mot de passe oublié ?</a>
+        </div>
+        <button type="submit" class="submit">Se connecter →</button>
+        <button type="button" class="sso"><span class="sso-icon"></span>Connexion via l'Université Hassan II (CAS)</button>
+      </form>
+
+      <div class="separator">Vous n'avez pas encore de compte</div>
+      <p style="font-family: var(--font-serif); font-size: 13.5px; color: var(--muted); text-align:center; line-height: 1.6; margin: 0;">
+        Les comptes sont créés sur acceptation de votre demande d'adhésion par le directeur en mandat.
+      </p>
+      <div style="text-align:center; margin-top: 14px;">
+        <a href="Site Public LIAS.html" style="font-family: var(--font-sans); font-size: 13px; color: var(--navy); font-weight: 500;">Déposer une demande d'adhésion →</a>
+      </div>
+
+      <div class="demo-accounts">
+        <div class="label">Comptes de démonstration</div>
+        <div class="accounts">
+          <button onclick="document.getElementById('email').value='y.elamrani@lias.ma'; document.getElementById('pwd').value='demo-directeur';">
+            <strong>Directeur</strong><span>Pr. El Amrani</span>
+          </button>
+          <button onclick="document.getElementById('email').value='s.bennani@lias.ma'; document.getElementById('pwd').value='demo-permanent';">
+            <strong>Permanente</strong><span>Pr. Bennani</span>
+          </button>
+          <button onclick="document.getElementById('email').value='aya.saidi@etu.lias.ma'; document.getElementById('pwd').value='demo-doctorant';">
+            <strong>Doctorante</strong><span>A. Saidi</span>
+          </button>
+          <button onclick="document.getElementById('email').value='admin@lias.ma'; document.getElementById('pwd').value='demo-admin';">
+            <strong>Admin technique</strong><span>Système</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="help">
+        Visiteur ? <a href="Site Public LIAS.html">Consultez le site public</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

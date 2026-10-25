@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratoire LIAS — Backend API</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+            border: 1px solid #334155;
+        }
+        .badge {
+            display: inline-block;
+            background: #059669;
+            color: #ecfdf5;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        h1 {
+            font-size: 22px;
+            margin: 0 0 8px 0;
+            color: #fff;
+        }
+        p {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 8px 0;
+        }
+        .info {
+            background: #0f172a;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+            font-size: 13px;
+            font-family: monospace;
+            color: #38bdf8;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <span class="badge">● Opérationnel</span>
+        <h1>LIAS Backend — Tomcat 10.1 (Java 21)</h1>
+        <p>Le serveur d'application du Laboratoire LIAS est prêt pour le déploiement des servlets et de l'API REST.</p>
+        <div class="info">
+            • Environnement : Jakarta EE 10 / Tomcat 10.1<br>
+            • Frontend : <a href="http://localhost:5173" style="color:#38bdf8;">http://localhost:5173</a><br>
+            • MySQL : port 3306 (lias_db)
+        </div>
+    </div>
+</body>
+</html>
